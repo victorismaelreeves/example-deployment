@@ -1,21 +1,19 @@
-
 pipeline {
    agent any
 
-   tools {
-    go { 'go-1.14' }
-   }
-
    stages {
-      stage('Build') {
+      stage('Copy artifact') {
          steps {
-           sh 'go build'
+            copyArtifacts filter: 'example1', fingerprintArtifacts: true, projectName: 'example 1', selector: lastSuccessful()
          }
       }
-      stage('Publish artifact') {
+      stage('deliver') {
          steps {
-           archiveArtifacts 'simple_ruby'
+             sshagent(['toolbox-vagrant-key']) {
+                sh "scp example1 vagrant@10.10.50.3:~"
+             }
          }
-      }
+      }  
    }
 }
+
