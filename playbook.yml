@@ -1,6 +1,8 @@
-hosts: all
-tasks:
-  - name: artifact
-    copy:
-      src: example1
-      dest: /home/vagrant/example1
+- hosts: all
+  tasks:
+    - name: artifact
+      copy:
+        src: example1
+        force: true
+        backup: true
+        dest: /home/vagrant/example1
